@@ -1,0 +1,73 @@
+class Solution {
+public:
+    void next_greater_element(int next_greater[],vector<int> &height,char direction){
+        int n = height.size();
+        stack<int> st;
+        int i= ((direction=='r')?0:n-1);
+        st.push(i);
+        while(i<height.size() && i>=0){
+            while(!st.empty() && height[i]>height[st.top()]){
+                next_greater[st.top()] = i;
+                st.pop();
+            }
+            st.push(i);
+            if(direction=='r'){
+                i++;
+            }
+            else{
+                i--;
+            }
+        }
+    }
+    
+    int maxArea(vector<int>& height) {
+        int n = height.size();
+        int next_greater_left[n],next_greater_right[n];
+        memset(next_greater_left,-1,sizeof(next_greater_left));
+        memset(next_greater_right,-1,sizeof(next_greater_right));
+        next_greater_element(next_greater_left,height,'l');
+        next_greater_element(next_greater_right,height,'r');
+        
+        int left_ptr = 0; int right_ptr = n-1;
+        int max_ans = 0;
+        while(left_ptr<right_ptr){
+            if(left_ptr==-1 || right_ptr==-1){
+                break;
+            }
+            max_ans = max(max_ans,min(height[left_ptr],height[right_ptr])*(right_ptr-left_ptr));
+            if(height[left_ptr]<height[right_ptr]){
+                left_ptr = next_greater_right[left_ptr];
+            }
+            else{
+                right_ptr = next_greater_left[right_ptr];
+            }
+        }
+        return max_ans;
+    }
+};
+
+
+
+
+OR
+
+
+
+class Solution {
+public:
+    int maxArea(vector<int>& height) {
+        int n = height.size();
+        int i = 0; int j = n-1;
+        int ma = INT_MIN;
+        while(i<j){
+            int area = (j-i)*min(height[i],height[j]);
+            ma = max(area,ma);
+            if(height[i]<height[j]){
+                i++;
+            }
+            else{
+                j--;
+            }
+        }
+        return ma;
+    }
