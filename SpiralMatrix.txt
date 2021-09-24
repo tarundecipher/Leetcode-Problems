@@ -1,0 +1,71 @@
+class Solution {
+public:
+        char findvalidtoken(int visited[][(int)11],int i,int j,vector<vector<int>>& matrix){
+            if(j+1<matrix[0].size() && visited[i][j+1]==false){
+               return 'r';
+            }
+            else if(i+1<matrix.size() &&  visited[i+1][j]==false){
+                return 'd';
+            }
+            else if(j-1>=0 &&  visited[i][j-1]==false){
+                return 'l';
+            }
+            else if(i-1>=0 &&  visited[i-1][j]==false){
+                return 'u';
+            }
+            return ' ';
+        }
+    
+        bool istokenvalid(char token,int visited[][(int)11],int i,int j,vector<vector<int>>& matrix){
+            if(token=='r' && j+1<matrix[0].size() && !visited[i][j+1] ){
+                return true;
+            }
+            else if(token=='l' && j-1>=0 && !visited[i][j-1] ){
+                return true;
+            }
+            else if(token=='d' && i+1<matrix.size() && !visited[i+1][j] ){
+                return true;
+            }
+            else if(token=='u' && i-1>=0 && !visited[i-1][j] ){
+                return true;
+            }
+            return false;
+        }
+    
+        void spiral(vector<vector<int>>& matrix,int visited[][(int)11],vector<int> &ans,int i,int j,
+                   char token){
+            if(visited[i][j] || j>=matrix[0].size() || i>=matrix.size()
+              || i<0 || j<0 || token==' '){
+                return;
+            }
+            visited[i][j] = true;
+            ans.push_back(matrix[i][j]);
+            
+            if(!istokenvalid(token,visited,i,j,matrix)){
+                token = findvalidtoken(visited,i,j,matrix);
+            }
+            
+            if(token=='r'){
+                spiral(matrix,visited,ans,i,j+1,token);
+            }
+            else if(token=='l'){
+                spiral(matrix,visited,ans,i,j-1,token);
+            }
+            else if(token=='d'){
+                spiral(matrix,visited,ans,i+1,j,token);
+            }
+            else if(token=='u'){
+                spiral(matrix,visited,ans,i-1,j,token);
+            }
+        }
+    
+        vector<int> spiralOrder(vector<vector<int>>& matrix){
+            vector<int> ans;
+            int visited[(int)11][(int)11];
+            memset(visited,false,sizeof(visited));
+            spiral(matrix,visited,ans,0,0,'r');
+            return ans;
+        } 
+        
+    
+};
