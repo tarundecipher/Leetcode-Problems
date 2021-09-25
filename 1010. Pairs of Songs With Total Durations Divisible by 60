@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int numPairsDivisibleBy60(vector<int>& time) {
+        int n = time.size();
+        for(int i=0;i<n;i++){
+            time[i] = time[i]%60;
+        }
+        int freq[61];
+        memset(freq,0,sizeof(freq));
+        for(int i=0;i<n;i++){
+              freq[time[i]]++;
+        }
+        int ans = freq[0]*(freq[0]-1)/2;
+        for(int i=1;i<=29;i++){
+            ans += freq[i]*freq[60-i];
+        }
+        ans+=freq[30]*(freq[30]-1)/2;
+        return ans;
+        
+    }
+};
