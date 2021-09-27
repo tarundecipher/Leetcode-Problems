@@ -10,12 +10,18 @@ public:
             return memo[k];
         }
         int next_index = -1;
-        for(int i=k;i<nums.size();i++){
-            if(nums[i]>nums[k]+1){
-                next_index = i;
-                break;
-            }
+        // for(int i=k;i<nums.size();i++){
+        //     if(nums[i]>nums[k]+1){
+        //         next_index = i;
+        //         break;
+        //     }
+        // }
+        auto index = lower_bound(nums.begin()+k,nums.end(),nums[k]+2);
+        next_index = index-nums.begin();
+        if(index==nums.end()){
+            next_index = -1;
         }
+        
         int a1 = 0;
         int a2 = 0;
         a1 = nums[k]*freq[nums[k]]+clc(next_index,nums);
