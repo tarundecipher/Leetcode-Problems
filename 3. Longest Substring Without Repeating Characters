@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        int ans = 0;
+        int leftptr = 0;
+        int rightptr =0;
+        int n = s.length();
+        int freq[100];
+        memset(freq,0,sizeof(freq));
+        while(rightptr<n){
+            freq[s[rightptr]-' ']++;
+            while(freq[s[rightptr]-' ']>1 && leftptr<rightptr){
+                freq[s[leftptr]-' ']--;
+                leftptr++;
+            }
+            //sure
+            ans = max(ans,rightptr-leftptr+1);
+            rightptr++;
+        }
+        return ans;
+    }
+};
